@@ -8,7 +8,7 @@ flask-admin
 flask-simplelogin
 flask-bootstrap
 flask-sqlalchemy
-sqlalchemy-serializer
+sqlalchemy-serializer<2
 dynaconf
 click
 flask-restful

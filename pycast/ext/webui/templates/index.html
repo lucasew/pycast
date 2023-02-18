@@ -17,9 +17,10 @@
 
 <div class="jumbotron">
 <ul class="list-group">
-    {% for product in products %}
+    {% for podcast in podcasts %}
     <li class="list-group-item">
-        <a href="{{url_for('webui.productview', product_id=product.id)}}">{{product.name}}- {{ "%0.2f" | format(product.price)}}</a>
+        <h1>{{ podcast.title }}</h1>
+        <p>{{ podcast.summary }}</h1>
     </li>
     {% endfor %}
 </ul>
