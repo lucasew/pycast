@@ -1,17 +1,21 @@
-"""
-pycast base module.
+from dynaconf import FlaskDynaconf
+from flask import Flask
 
-This is the principal module of the pycast project.
-here you put your main classes and objects.
 
-Be creative! do whatever you want!
+def create_app(**config):
+    app = Flask(__name__)
+    FlaskDynaconf(app)  # config managed by Dynaconf
+    app.config.load_extensions(
+        "EXTENSIONS"
+    )  # Load extensions from settings.toml
+    app.config.update(config)  # Override with passed config
+    return app
 
-If you want to replace this with a Flask application run:
 
-    $ make init
-
-and then choose `flask` as template.
-"""
-
-# example constant variable
-NAME = "pycast"
+def create_app_wsgi():
+    # workaround for Flask issue
+    # that doesn't allow **config
+    # to be passed to create_app
+    # https://github.com/pallets/flask/issues/4170
+    app = create_app()
+    return app

@@ -1,6 +1,13 @@
-"""Entry point for pycast."""
+import click
+from flask.cli import FlaskGroup
 
-from .cli import main  # pragma: no cover
+from . import create_app_wsgi
+
+
+@click.group(cls=FlaskGroup, create_app=create_app_wsgi)
+def main():
+    """Management script for the pycast application."""
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()

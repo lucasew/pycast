@@ -10,7 +10,7 @@ This instructions are for linux base systems. (Linux, MacOS, BSD, etc.)
 - On github interface click on `Fork` button.
 - Clone your fork of this repo. `git clone git@github.com:YOUR_GIT_USERNAME/pycast.git`
 - Enter the directory `cd pycast`
-- Add upstream repo `git remote add upstream https://github.com/lucasew/pycast`
+- Add upstream repo `git remote add upstream https://github.com//pycast`
 
 ## Setting up your own virtual environment
 

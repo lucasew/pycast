@@ -32,11 +32,11 @@ def read_requirements(path):
 setup(
     name="pycast",
     version=read("pycast", "VERSION"),
-    description="Awesome pycast created by lucasew",
-    url="https://github.com/lucasew/pycast/",
+    description="Awesome pycast created by ",
+    url="https://github.com//pycast/",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    author="lucasew",
+    author="",
     packages=find_packages(exclude=["tests", ".github"]),
     install_requires=read_requirements("requirements.txt"),
     entry_points={
