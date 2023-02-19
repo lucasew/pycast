@@ -1,2 +1,4 @@
 site_name: pycast
 theme: readthedocs
+plugins:
+  - mkdocstrings

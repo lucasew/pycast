@@ -8,6 +8,10 @@ from pycast.ext.database import db
 FingerprintType = db.CHAR(64)
 
 class PodcastSource(db.Model, SerializerMixin):
+    """
+    Represents somewhere you can get podcasts, like a RSS feed or a YouTube channel
+    """
+
     __tablename__ = "pycast_source"
 
     fingerprint = db.Column(FingerprintType, primary_key=True)
@@ -21,6 +25,10 @@ class PodcastSource(db.Model, SerializerMixin):
     created_time = db.Column(db.DateTime, server_default=func.now())
 
 class PodcastEpisode(db.Model, SerializerMixin):
+    """
+    Represents a episode that is linked to a source
+    """
+
     __tablename__ = "pycast_episode"
 
     fingerprint = db.Column(FingerprintType, primary_key=True)
@@ -39,12 +47,20 @@ class PodcastEpisode(db.Model, SerializerMixin):
 
 
 class User(db.Model, SerializerMixin):
+    """
+    Represents a registered user
+    """
+
     id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key=True)
     username = db.Column(db.String(140))
     password = db.Column(db.String(512))
 
 
 class Listen(db.Model, SerializerMixin):
+    """
+    Represents a listen in a combination of episode and user
+    """
+
     __tablename__ = "pycast_listen"
 
     id = db.Column(db.Integer, db.Sequence('listen_id_seq'), primary_key=True)
@@ -59,6 +75,10 @@ class Listen(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Subscription(db.Model, SerializerMixin):
+    """
+    Represents a source subscription for an user
+    """
+
     __tablename__ = "pycast_subscription"
 
     id = db.Column(db.Integer, db.Sequence('subscription_id_seq'), primary_key=True)
