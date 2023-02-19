@@ -12,3 +12,5 @@ sqlalchemy-serializer<2
 dynaconf
 click
 flask-restful
+
+feedparser

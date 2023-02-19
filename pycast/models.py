@@ -21,8 +21,33 @@ class PodcastSource(db.Model, SerializerMixin):
 
     feed_url = db.Column(db.Text)
 
+    source_type = db.Column("_type", db.Text)
+    source_state = db.Column("_state", db.Text)
+
     updated_time = db.Column(db.DateTime, onupdate=func.now(), server_default=func.now())
     created_time = db.Column(db.DateTime, server_default=func.now())
+
+    def as_dict(self):
+        from json import loads
+        return dict(
+            fingerprint=self.fingerprint,
+            title=self.title,
+            summary=self.summary,
+            feed_url=self.feed_url,
+            type=self.source_type,
+            internal_state=loads(self.source_state),
+            updated_time=self.updated_time,
+            created_time=self.created_time
+        )
+
+    def as_brief_dict(self):
+        return dict(
+            fingerprint=self.fingerprint,
+            title=self.title,
+            summary=self.summary,
+            feed_url=self.feed_url,
+            type=self.source_type
+        )
 
 class PodcastEpisode(db.Model, SerializerMixin):
     """
@@ -44,6 +69,26 @@ class PodcastEpisode(db.Model, SerializerMixin):
 
     source_id = db.Column(FingerprintType, db.ForeignKey('pycast_source.fingerprint'))
 
+    def as_dict(self):
+        from json import loads
+        return dict(
+            fingerprint=self.fingerprint,
+            title=self.title,
+            summary=self.summary,
+            duration=self.duration,
+            published=self.published,
+            type=self.episode_type,
+            internal_state=loads(self.episode_state),
+        )
+
+    def as_brief_dict(self):
+        return dict(
+            fingerprint=self.fingerprint,
+            title=self.title,
+            duration=self.duration,
+            published=self.published,
+            type=self.episode_type
+        )
 
 
 class User(db.Model, SerializerMixin):

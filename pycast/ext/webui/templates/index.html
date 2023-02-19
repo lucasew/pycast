@@ -17,10 +17,10 @@
 
 <div class="jumbotron">
 <ul class="list-group">
-    {% for podcast in podcasts %}
+    {% for podcast in episodes %}
     <li class="list-group-item">
         <h1>{{ podcast.title }}</h1>
-        <p>{{ podcast.summary }}</h1>
+        <p>{{ podcast.summary | safe }}</h1>
     </li>
     {% endfor %}
 </ul>
