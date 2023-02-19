@@ -7,7 +7,7 @@ pkgs.mkShell {
   ];
   shellHook = ''
     if [ ! -d .venv ]; then
-      make virtualenv
+      make virtualenv patch-deps
     fi
     . .venv/bin/activate
   '';

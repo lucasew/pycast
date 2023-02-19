@@ -9,6 +9,8 @@ help:             ## Show the help.
 	@echo "Targets:"
 	@fgrep "##" Makefile | fgrep -v fgrep
 
+patch-deps:
+	sed -i 's;from sqlalchemy.ext.associationproxy import ASSOCIATION_PROXY;from sqlalchemy.ext.associationproxy import AssociationProxy as ASSOCIATION_PROXY;' .venv/lib/python*/site-packages/flask_admin/contrib/sqla/tools.py
 
 .PHONY: show
 show:             ## Show the current environment.
