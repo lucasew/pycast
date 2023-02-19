@@ -5,26 +5,25 @@ from typing import List
 
 from pycast.ext.database import db
 
-class PodcastSource(db.Model, SerializerMixin):
-    ___tablename__ = "pycast_source"
+FingerprintType = db.CHAR(64)
 
-    fingerprint = db.Column(db.CHAR(64), primary_key=True)
+class PodcastSource(db.Model, SerializerMixin):
+    __tablename__ = "pycast_source"
+
+    fingerprint = db.Column(FingerprintType, primary_key=True)
 
     title = db.Column(db.Text)
     summary = db.Column(db.Text)
 
     feed_url = db.Column(db.Text)
 
-    last_updated = db.Column(
-        db.DateTime,
-        onupdate=func.now(),
-        server_default=func.now()
-    )
+    updated_time = db.Column(db.DateTime, onupdate=func.now(), server_default=func.now())
+    created_time = db.Column(db.DateTime, server_default=func.now())
 
 class PodcastEpisode(db.Model, SerializerMixin):
-    ___tablename__ = "pycast_episode"
+    __tablename__ = "pycast_episode"
 
-    fingerprint = db.Column(db.CHAR(64), primary_key=True)
+    fingerprint = db.Column(FingerprintType, primary_key=True)
 
     title = db.Column(db.Text)
     summary = db.Column(db.Text)
@@ -35,10 +34,9 @@ class PodcastEpisode(db.Model, SerializerMixin):
     episode_type = db.Column("_type", db.Text)
     episode_state = db.Column("_state", db.Text)
 
-    # source = db.relationship('pycast_source', back_populates='podcasts')
-    source_id = db.Column(db.CHAR(64), db.ForeignKey('podcast_source.fingerprint'))
+    source_id = db.Column(FingerprintType, db.ForeignKey('pycast_source.fingerprint'))
 
-PodcastSource.podcasts = db.relationship('PodcastEpisode', backref="source", lazy=True)
+
 
 class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key=True)
@@ -46,3 +44,34 @@ class User(db.Model, SerializerMixin):
     password = db.Column(db.String(512))
 
 
+class Listen(db.Model, SerializerMixin):
+    __tablename__ = "pycast_listen"
+
+    id = db.Column(db.Integer, db.Sequence('listen_id_seq'), primary_key=True)
+
+    duration = db.Column(db.Integer)
+    is_listened = db.Column(db.Boolean)
+
+    updated_time = db.Column(db.DateTime, onupdate=func.now(), server_default=func.now())
+    created_time = db.Column(db.DateTime, server_default=func.now())
+
+    episode_id = db.Column(FingerprintType, db.ForeignKey('pycast_episode.fingerprint'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Subscription(db.Model, SerializerMixin):
+    __tablename__ = "pycast_subscription"
+
+    id = db.Column(db.Integer, db.Sequence('subscription_id_seq'), primary_key=True)
+
+    source_id = db.Column(FingerprintType, db.ForeignKey('pycast_source.fingerprint'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    created_time = db.Column(db.DateTime, server_default=func.now())
+
+User.listened = db.relationship(Listen.__name__, backref='episode', lazy=True)
+PodcastEpisode.listens = db.relationship(Listen.__name__, backref='user', lazy=True)
+
+PodcastSource.episodes = db.relationship(PodcastEpisode.__name__, backref="source", lazy=True)
+
+PodcastSource.subscribers = db.relationship(Subscription.__name__, backref='source', lazy=True)
+User.subscribed = db.relationship(Subscription.__name__, backref='user', lazy=True)
