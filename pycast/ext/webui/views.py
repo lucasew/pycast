@@ -1,4 +1,4 @@
-from flask import abort, render_template
+from flask import render_template
 from flask_simplelogin import login_required
 
 from pycast.models import PodcastEpisode, PodcastSource
@@ -6,7 +6,8 @@ from pycast.models import PodcastEpisode, PodcastSource
 
 def index():
     episodes = PodcastEpisode.query.all()
-    return render_template("index.html", episodes=episodes)
+    sources = PodcastSource.query.all()
+    return render_template("index.html", episodes=episodes, sources=sources)
 
 
 # def product(product_id):

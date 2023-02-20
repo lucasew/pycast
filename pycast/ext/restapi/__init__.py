@@ -1,7 +1,13 @@
 from flask import Blueprint
 from flask_restful import Api
 
-from .resources import SourceResource, SourceItemResource, EpisodeItemResource, EpisodeItemResourceProps, SourceItemResourceProps
+from .resources import (
+    EpisodeItemResource,
+    EpisodeItemResourceProps,
+    SourceItemResource,
+    SourceItemResourceProps,
+    SourceResource,
+)
 
 bp = Blueprint("restapi", __name__, url_prefix="/api/v1")
 api = Api(bp)

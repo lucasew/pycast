@@ -4,6 +4,7 @@ pkgs.mkShell {
     entr
     gnumake
     python3
+    python3Packages.pylsp-mypy
   ];
   shellHook = ''
     if [ ! -d .venv ]; then
