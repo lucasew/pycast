@@ -1,10 +1,21 @@
 from flask import Blueprint
 
-from .views import index, only_admin, secret
+from .views import index, only_admin, secret, sources, source, episode
 
 bp = Blueprint("webui", __name__, template_folder="templates")
 
+@bp.app_template_filter()
+def escape_html(value):
+    from bleach import clean
+    from bleach.sanitizer import ALLOWED_TAGS
+    from markupsafe import Markup
+    return Markup(clean(value, tags=set([*ALLOWED_TAGS, "p", "span", "br"])))
+
+
 bp.add_url_rule("/", view_func=index)
+bp.add_url_rule("/sources", view_func=sources)
+bp.add_url_rule("/source/<source_id>", view_func=source)
+bp.add_url_rule("/episode/<episode_id>", view_func=episode)
 # bp.add_url_rule(
 #     "/product/<product_id>", view_func=product, endpoint="productview"
 # )

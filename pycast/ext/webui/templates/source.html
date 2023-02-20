@@ -12,14 +12,35 @@
 {% endblock %}
 
 {% block content %}
+
+<style>
+.item {
+    display: flex;
+    padding: 2rem;
+}
+.item > img {
+    height: 10rem;
+    object-fit: contain;
+}
+</style>
+
 <div class="container">
 
-<h1>Podcasts disponíveis</h1>
-
-{% for source in sources %}
 <div class="item">
-    <h1{source.title}></h1>
-    {source.summary}
+    <img style="margin: auto" src="/api/v1/source/{{source.fingerprint}}/thumbnail"></img>
+    <div class="item-text">
+        <h1>{{source.title}}</h1>
+        {{source.summary}}
+    </div>
+</div>
+
+{% for episode in source.episodes %}
+<div class="item">
+    <img src="/api/v1/episode/{{episode.fingerprint}}/thumbnail"></img>
+    <div class="item-text">
+        <h1><a href="/episode/{{episode.fingerprint}}"> {{episode.title}}</a></h1>
+        {{episode.summary | escape_html}}
+    </div>
 </div>
 {% endfor %}
 </div>
