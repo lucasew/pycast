@@ -5,7 +5,7 @@ from typing import List
 
 from pycast.ext.database import db
 
-FingerprintType = db.CHAR(64)
+FingerprintType = db.CHAR(128)
 
 class PodcastSource(db.Model, SerializerMixin):
     """
