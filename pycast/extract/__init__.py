@@ -1,5 +1,9 @@
 import pycast.extract.rss as rss_extractor
 
+from flask import abort
+
+from pycast.ext.database import db
+
 from ..models import PodcastEpisode, PodcastSource
 
 extractors = [rss_extractor]  # last because rss is the fallback
@@ -11,9 +15,15 @@ for extractor in extractors:
 
 
 def from_url(url: str):
+    used_extractor = None
     for extractor in extractors:
         if extractor.extractable(url):
-            return extractor.from_url(url)
+            used_extractor = extractor
+    if used_extractor is None:
+        abort(400, "no extractor supports this resource")
+    ret = extractor.from_url(url)
+    db.session.commit()
+    return ret
 
 
 def get_audio_from_episode(episode: PodcastEpisode):
@@ -23,7 +33,10 @@ def get_audio_from_episode(episode: PodcastEpisode):
 
 def get_thumbnail_from_episode(episode: PodcastEpisode):
     extractor = extractors_kv[episode.episode_type]
-    return extractor.get_thumbnail_from_episode(episode)
+    ret = extractor.get_thumbnail_from_episode(episode)
+    if ret is None:
+        return get_thumbnail_from_source(episode.source)
+    return ret
 
 
 def get_thumbnail_from_source(source: PodcastSource):
@@ -32,5 +45,9 @@ def get_thumbnail_from_source(source: PodcastSource):
 
 
 def refresh_source(source: PodcastSource):
+    from datetime import datetime
     extractor = extractors_kv[source.source_type]
-    return extractor.refresh_source(source)
+    ret = extractor.refresh_source(source)
+    setattr(source, 'updated_time', datetime.now())
+    db.session.commit()
+    return ret

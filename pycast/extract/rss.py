@@ -87,7 +87,6 @@ def refresh_source(source: PodcastSource, data_entries=None):
         fingerprint_summary = fingerprint_string(entity.summary)
         entity.fingerprint = fingerprint_title + fingerprint_summary
         db.session.merge(entity)
-    db.session.commit()
     return jsonify("ok")
 
 
