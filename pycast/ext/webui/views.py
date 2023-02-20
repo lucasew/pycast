@@ -1,5 +1,6 @@
 from flask import render_template, abort
 from flask_simplelogin import login_required
+import flask_simplelogin
 
 from pycast.models import PodcastEpisode, PodcastSource
 
@@ -11,7 +12,7 @@ def index():
 
 def sources():
     sources = PodcastSource.query.all()
-    return render_template("sources.html", sources=sources, clean=clean)
+    return render_template("sources.html", sources=sources)
 
 def source(source_id: str):
     if len(source_id) != 128:
@@ -24,6 +25,9 @@ def episode(episode_id: str):
         abort(404)
     episode = PodcastEpisode.query.get(episode_id) or abort(404)
     return render_template("episode.html", episode=episode)
+
+def whoami():
+    return render_template("whoami.html", login=flask_simplelogin)
 
 
 # def product(product_id):

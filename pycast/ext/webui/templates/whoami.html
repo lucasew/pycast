@@ -3,7 +3,8 @@
 {% block content %}
 <div class="container">
 
-<h1>Welcome, {{get_username() or "stranger"}}</h1>
+<p>Logado: {{is_logged_in()}}<p>
+<p>Username: {{get_username()}}</p>
 
 </div>
 {% endblock %}
