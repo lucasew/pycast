@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Add new source</h1>
+
+<form action="/api/v1/source" method="POST">
+    URL: <input type="url" autocorrect="off" autofocus="on" autosave="_add_source_url" name="feed_url"/>
+    <input type="text" hidden="on" name="redirect_to_gui"/>
+    <button type="submit">Submit podcast URL</button>
+</form>
+
+</div>
+{% endblock %}

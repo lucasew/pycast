@@ -20,6 +20,9 @@ def source(source_id: str):
     source = PodcastSource.query.get(source_id) or abort(404)
     return render_template("source.html", source=source)
 
+def new_source():
+    return render_template("new_source.html")
+
 def episode(episode_id: str):
     if len(episode_id) != 128:
         abort(404)

@@ -84,9 +84,9 @@ def refresh_source(source: PodcastSource, data_entries=None):
     for i in range(len(entities)):
         entity = entities[i]
         fingerprint_title = fingerprint_string(entity.title)
-        fingerprint_podcast = source.fingerprint
-        entity.fingerprint = fingerprint_title + fingerprint_podcast
-        db.session.merge(entity)
+        fingerprint_podcast = fingerprint_string(source.fingerprint)
+        entity.fingerprint = fingerprint_podcast + fingerprint_title
+        db.session.add(entity)
     return jsonify("ok")
 
 
@@ -114,6 +114,6 @@ def from_url(url: str):
     fingerprint_title = fingerprint_string(source_entity.title)
     fingerprint_summary = fingerprint_string(source_entity.summary)
     source_entity.fingerprint = fingerprint_title + fingerprint_summary
-    db.session.add(source_entity)
     refresh_source(source_entity, data_entries=feedparsed["entries"])
+    db.session.merge(source_entity)
     return source_entity

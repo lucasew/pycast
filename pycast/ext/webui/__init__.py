@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from .views import index, only_admin, secret, sources, source, episode, whoami
+from .views import index, only_admin, secret, sources, source, episode, whoami, new_source
 
 bp = Blueprint("webui", __name__, template_folder="templates")
 
@@ -21,6 +21,7 @@ def user():
 
 bp.add_url_rule("/", view_func=index)
 bp.add_url_rule("/sources", view_func=sources)
+bp.add_url_rule("/new-source", view_func=new_source)
 bp.add_url_rule("/source/<source_id>", view_func=source)
 bp.add_url_rule("/episode/<episode_id>", view_func=episode)
 # bp.add_url_rule(

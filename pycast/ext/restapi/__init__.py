@@ -14,7 +14,7 @@ api = Api(bp)
 
 
 def init_app(app):
-    api.add_resource(SourceResource, "/source/")
+    api.add_resource(SourceResource, "/source")
     api.add_resource(SourceItemResource, "/source/<source_id>")
     api.add_resource(EpisodeItemResource, "/episode/<episode_id>")
     api.add_resource(EpisodeItemResourceProps, "/episode/<episode_id>/<prop>")

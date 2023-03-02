@@ -23,6 +23,7 @@ def from_url(url: str):
         abort(400, "no extractor supports this resource")
     ret = extractor.from_url(url)
     db.session.commit()
+    db.session.flush()
     return ret
 
 

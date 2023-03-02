@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from flask import abort, jsonify
+from flask import abort, jsonify, request, redirect
 from flask_restful import Resource
 from flask_simplelogin import login_required
 
@@ -24,10 +24,17 @@ class SourceResource(Resource):
         )
 
     @login_required(basic=True)
-    def post(self, feed_url: Optional[str] = None):
+    def post(self):
+        feed_url = request.form.get('feed_url')
+        redirect_to_gui = request.form.get('redirect_to_gui')
         if feed_url is None:
             return make_error_response("missing feed_url", 400)
-        return from_url(feed_url)
+        print('feed_url', feed_url)
+        ret = from_url(feed_url)
+        if redirect_to_gui is None:
+            return ret.as_dict()
+        else:
+            return redirect(f"/source/{ret.fingerprint}")
 
 
 class SourceItemResource(Resource):
