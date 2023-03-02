@@ -51,7 +51,7 @@ def refresh_source(source: PodcastSource, data_entries=None):
     for episode in data_entries:
         duration = 0
         audio_link = None
-        for link in episode["links"]:
+        for link in episode["links"] if episode.get('links') is not None else []:
             if link["type"].startswith("audio"):
                 audio_link = link["href"]
         if audio_link is None:
@@ -92,15 +92,16 @@ def refresh_source(source: PodcastSource, data_entries=None):
 
 def from_url(url: str):
     feedparsed = feedparse(url)
+    print(feedparsed)
     feed = feedparsed["feed"]
     feed_url = url
-    for link in feed["links"]:
+    for link in feed["links"] if feed.get('links') is not None else []:
         if link["type"] in ["application/rss+xml"]:
             feed_url = link["href"]
 
     source_entity = PodcastSource(
         title=feed["title"],
-        summary=feed["content"],
+        summary=feed["content"] if feed.get('content') is not None else '',
         feed_url=feed_url,
         source_type=EXTRACTOR_NAME,
         source_state=dumps(
