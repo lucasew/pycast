@@ -15,7 +15,14 @@ def drop_db():
 
 
 def populate_db():
+    from pycast.extract import from_url
     """Populate db with sample data"""
+    podcast_urls = [
+        "http://feeds.libsyn.com/73434/rss", # Loop Matinal
+        "https://anchor.fm/s/a5637400/podcast/rss" # Flow
+    ]
+    for podcast_url in podcast_urls:
+        from_url(podcast_url)
     data = [
         # TODO: seed data
     ]
